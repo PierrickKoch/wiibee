@@ -1,0 +1,128 @@
+<!doctype>
+<head>
+    <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/rickshaw.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://code.shutterstock.com/rickshaw/rickshaw.min.js"></script>
+</head>
+<body>
+
+<style>
+#chart_container {
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#chart {
+    float: left;
+}
+#legend {
+    float: left;
+    margin-left: 15px;
+}
+#offset_form {
+    float: left;
+    margin: 2em 0 0 15px;
+    font-size: 13px;
+}
+#y_axis {
+    float: left;
+    width: 40px;
+}
+</style>
+
+<div id="chart_container">
+    <div id="y_axis"></div>
+    <div id="chart"></div>
+    <div id="legend"></div>
+    <div id="slider"></div>
+    <form id="offset_form" class="toggler">
+        <input type="radio" name="offset" id="lines" value="lines" checked>
+        <label class="lines" for="lines">lines</label><br>
+        <input type="radio" name="offset" id="stack" value="zero">
+        <label class="stack" for="stack">stack</label>
+    </form>
+</div>
+
+<script>
+var palette = new Rickshaw.Color.Palette();
+
+//
+// from .py
+//
+data = [
+    {'x':1473254575.007469947, 'y': 45.23},
+    {'x':1473254675.007469947, 'y': 41.23},
+    {'x':1473254775.007469947, 'y': 49.23},
+    {'x':1473254875.007469947, 'y': 42.23},
+    {'x':1473254975.007469947, 'y': 48.23},
+    {'x':1473255575.007469947, 'y': 43.23},
+    {'x':1473256575.007469947, 'y': 47.23},
+
+]
+//
+//
+
+var format = d3.time.format("%s.N");
+var graph = new Rickshaw.Graph({
+    element: document.getElementById("chart"),
+    width: 400,
+    height: 240,
+    renderer: 'line',
+    series: [{
+        name: 'mass',
+        data: data,
+        color: palette.color(),
+    }],
+});
+
+var hoverDetail = new Rickshaw.Graph.HoverDetail({
+    graph: graph
+});
+
+var legend = new Rickshaw.Graph.Legend({
+    graph: graph,
+    element: document.getElementById('legend')
+});
+
+var shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
+    graph: graph,
+    legend: legend
+});
+
+var highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
+    graph: graph,
+    legend: legend
+});
+
+var x_axis = new Rickshaw.Graph.Axis.Time({ graph: graph });
+
+var y_axis = new Rickshaw.Graph.Axis.Y({
+    graph: graph,
+    orientation: 'left',
+    tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+    element: document.getElementById('y_axis'),
+});
+
+var offsetForm = document.getElementById('offset_form');
+
+offsetForm.addEventListener('change', function(e) {
+    var offsetMode = e.target.value;
+
+    if (offsetMode == 'lines') {
+        graph.setRenderer('line');
+        graph.offset = 'zero';
+    } else {
+        graph.setRenderer('stack');
+        graph.offset = offsetMode;
+    }
+    graph.render();
+
+}, false);
+
+graph.render();
+
+</script>
+
+</body>
