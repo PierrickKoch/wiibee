@@ -50,27 +50,15 @@ pids=""
 ./wiiboard.py $DEBUG $BTADDR2 2>> wiiboard2.log >> wiiboard2.txt & pids="$! $pids"
 
 for i in $(seq $N_LOOP); do
-  temp=$(get_temperature)
-  date=$(date +%s.%N)
-  echo "$date $temp"
+  echo "$(date +%s.%N) $(get_temperature)" >> temperature.txt
+  # https://www.kernel.org/doc/Documentation/thermal/sysfs-api.txt
+  t=$(awk '{ print $N / 1000.0 }' /sys/class/thermal/thermal_zone0/temp)
+  echo "$(date +%s.%N) $t" >> temperature_cpu.txt
+  # http://www.elinux.org/RPI_vcgencmd_usage
+  t=$(LD_LIBRARY_PATH=/opt/vc/lib /opt/vc/bin/vcgencmd measure_temp|cut -c6-9)
+  echo "$(date +%s.%N) $t" >> temperature_gpu.txt
   sleep $T_SLEEP
-done >> temperature.txt & pids="$! $pids"
-
-# https://www.kernel.org/doc/Documentation/thermal/sysfs-api.txt
-for i in $(seq $N_LOOP); do
-  temp=$(awk '{ print $N / 1000.0 }' /sys/class/thermal/thermal_zone0/temp)
-  date=$(date +%s.%N)
-  echo "$date $temp"
-  sleep $T_SLEEP
-done >> temperature_cpu.txt & pids="$! $pids"
-
-# http://www.elinux.org/RPI_vcgencmd_usage
-for i in $(seq $N_LOOP); do
-  temp=$(LD_LIBRARY_PATH=/opt/vc/lib /opt/vc/bin/vcgencmd measure_temp|cut -c6-9)
-  date=$(date +%s.%N)
-  echo "$date $temp"
-  sleep $T_SLEEP
-done >> temperature_gpu.txt & pids="$! $pids"
+done & pids="$! $pids"
 
 wait $pids
 
