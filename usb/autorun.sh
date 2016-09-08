@@ -62,7 +62,7 @@ for i in $(seq $N_LOOP); do
   date=$(date +%s.%N)
   echo "$date $temp"
   sleep $T_SLEEP
-done > temperature_cpu.txt & pids="$! $pids"
+done >> temperature_cpu.txt & pids="$! $pids"
 
 # http://www.elinux.org/RPI_vcgencmd_usage
 for i in $(seq $N_LOOP); do
@@ -70,7 +70,7 @@ for i in $(seq $N_LOOP); do
   date=$(date +%s.%N)
   echo "$date $temp"
   sleep $T_SLEEP
-done > temperature_gpu.txt & pids="$! $pids"
+done >> temperature_gpu.txt & pids="$! $pids"
 
 wait $pids
 

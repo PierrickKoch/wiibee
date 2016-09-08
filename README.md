@@ -30,18 +30,9 @@ directly with the Raspberry Pi GPIO. See if the GPIO's 3.3V are enough.
 * https://www.ifixit.com/Guide/Wii+Balance+Board+Frame+Replacement/30899
 * https://www.raspberrypi.org/documentation/usage/gpio-plus-and-raspi2/
 
-Log CPU temperature with `sysfs`:
+Check if other thermal sensor are available:
 
 ```
 watch -n1 "cat /sys/class/hwmon/hwmon*/temp*_input"
 watch -n1 "cat /sys/class/thermal/thermal_zone*/temp"
 ```
-
-* https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/thermal/sysfs-api.txt
-
-Log GPU temperature with `vcgencmd` (Shows core temperature of BCM2835 SoC):
-
-```
-LD_LIBRARY_PATH=/opt/vc/lib /opt/vc/bin/vcgencmd measure_temp|cut -c6-9
-```
-* http://www.elinux.org/RPI_vcgencmd_usage
