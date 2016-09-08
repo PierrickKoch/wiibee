@@ -11,8 +11,8 @@
 USB_DEV=/dev/sda1
 USB_MNT=/mnt/usb
 logger "Check if USB disk is plugged in"
-[ -e $USB_DEV ] && logger "mount $USB_DEV" || exit 1
+[ -e $USB_DEV ] && logger "mount $USB_DEV" ||  logger "missing $USB_DEV"
 [ -d $USB_MNT ] || mkdir -p $USB_MNT
 mount $USB_DEV $USB_MNT
 SCRIPT="${USB_MNT}/autorun.sh"
-[ -x $SCRIPT ] && time ./$SCRIPT || exit 2
+[ -x $SCRIPT ] && $SCRIPT || exit 2

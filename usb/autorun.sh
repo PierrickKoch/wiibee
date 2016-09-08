@@ -21,6 +21,7 @@ pids=""
 # see https://github.com/pierriko/wiiboard
 ./wiiboard.py $DEBUG BTADDR1 2>> wiiboard1.log >> wiiboard1.txt & pids="$! $pids"
 ./wiiboard.py $DEBUG BTADDR2 2>> wiiboard2.log >> wiiboard2.txt & pids="$! $pids"
+./temperature.sh >> temperature.txt & pids="$! $pids"
 
 wait $pids
 shutdown -h now
