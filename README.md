@@ -28,3 +28,24 @@ directly with the Raspberry Pi GPIO.
 
 * https://www.ifixit.com/Guide/Disassembling+Wii+Balance+Board/6474#s27965
 * https://www.ifixit.com/Guide/Wii+Balance+Board+Frame+Replacement/30899
+
+Log temperature using `get_temperature` from `wittyPi/utilities.sh:415`
+* https://github.com/uugear/Witty-Pi-2/blob/master/wittyPi/utilities.sh#L415
+
+```
+. wittyPi/utilities.sh
+for i in $(seq $NLOOP); do
+  temp=$(get_temperature)
+  date=$(date +%s.%N)
+  echo "$temp $date" >> temperature.txt
+  sleep 0.1
+done
+```
+
+
+* https://www.mjmwired.net/kernel/Documentation/thermal/sysfs-api.txt
+
+```
+watch -n1 "cat /sys/class/hwmon/hwmon*/temp*_input"
+watch -n1 "cat /sys/class/thermal/thermal_zone*/temp"
+```
