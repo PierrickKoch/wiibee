@@ -28,6 +28,6 @@ get_temperature()
 for i in $(seq $N_LOOP); do
   temp=$(get_temperature)
   date=$(date +%s.%N)
-  echo "$temp $date"
+  echo "$date $temp"
   sleep $T_SLEEP
 done

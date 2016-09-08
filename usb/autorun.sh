@@ -26,9 +26,15 @@ pids=""
 ./wiiboard.py $DEBUG $BTADDR2 2>> wiiboard2.log >> wiiboard2.txt & pids="$! $pids"
 ./temperature.sh >> temperature.txt & pids="$! $pids"
 
+wait $pids
+
 ./txt2js.py temperature < temperature.txt > temperature.js
 ./txt2js.py wiiboard1 < wiiboard1.txt > wiiboard1.js
 ./txt2js.py wiiboard2 < wiiboard2.txt > wiiboard2.js
 
-wait $pids
+# http://www.uugear.com/portfolio/use-witty-pi-2-to-build-solar-powered-time-lapse-camera/
+# shutdown Raspberry Pi by pulling down GPIO-4
+gpio -g mode 4 out
+gpio -g write 4 0  # optional
+
 shutdown -h now

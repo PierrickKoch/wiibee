@@ -6,6 +6,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://code.shutterstock.com/rickshaw/rickshaw.min.js"></script>
+    <!-- data -->
+    <script src="temperature.js"></script>
+    <script src="wiiboard1.js"></script>
+    <script src="wiiboard2.js"></script>
 </head>
 <body>
 
@@ -48,22 +52,6 @@
 <script>
 var palette = new Rickshaw.Color.Palette();
 
-//
-// from .py
-//
-data = [
-    {'x':1473254575.007469947, 'y': 45.23},
-    {'x':1473254675.007469947, 'y': 41.23},
-    {'x':1473254775.007469947, 'y': 49.23},
-    {'x':1473254875.007469947, 'y': 42.23},
-    {'x':1473254975.007469947, 'y': 48.23},
-    {'x':1473255575.007469947, 'y': 43.23},
-    {'x':1473256575.007469947, 'y': 47.23},
-
-]
-//
-//
-
 var format = d3.time.format("%s.N");
 var graph = new Rickshaw.Graph({
     element: document.getElementById("chart"),
@@ -71,8 +59,16 @@ var graph = new Rickshaw.Graph({
     height: 240,
     renderer: 'line',
     series: [{
-        name: 'mass',
-        data: data,
+        name: 'weight1 in Kg',
+        data: wiiboard1,
+        color: palette.color(),
+    }, {
+        name: 'weight2 in Kg',
+        data: wiiboard2,
+        color: palette.color(),
+    }, {
+        name: 'temperature in °C',
+        data: temperature,
         color: palette.color(),
     }],
 });
