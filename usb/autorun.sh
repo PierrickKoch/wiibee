@@ -46,6 +46,7 @@ logger "Start listenning to the mass measurements"
 
 pids=""
 # https://github.com/pierriko/wiiboard
+[ -e wiiboard.py ] || wget https://raw.githubusercontent.com/pierriko/wiiboard/master/wiiboard.py
 ./wiiboard.py $DEBUG $BTADDR1 2>> wiiboard1.log >> wiiboard1.txt & pids="$! $pids"
 ./wiiboard.py $DEBUG $BTADDR2 2>> wiiboard2.log >> wiiboard2.txt & pids="$! $pids"
 
