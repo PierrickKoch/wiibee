@@ -46,9 +46,8 @@ logger "Start listenning to the mass measurements"
 
 pids=""
 # https://github.com/pierriko/wiiboard
-[ -e wiiboard.py ] || wget https://raw.githubusercontent.com/pierriko/wiiboard/master/wiiboard.py
-./wiiboard.py $DEBUG $BTADDR1 2>> wiiboard1.log >> wiiboard1.txt & pids="$! $pids"
-./wiiboard.py $DEBUG $BTADDR2 2>> wiiboard2.log >> wiiboard2.txt & pids="$! $pids"
+wiiboard.py $DEBUG $BTADDR1 2>> wiiboard1.log >> wiiboard1.txt & pids="$! $pids"
+wiiboard.py $DEBUG $BTADDR2 2>> wiiboard2.log >> wiiboard2.txt & pids="$! $pids"
 
 for i in $(seq $N_LOOP); do
   echo "$(date +%s.%N) $(get_temperature)" >> temperature.txt
@@ -63,15 +62,17 @@ done & pids="$! $pids"
 
 wait $pids
 
-./txt2js.py wiiboard1 < wiiboard1.txt > wiiboard1.js
-./txt2js.py wiiboard2 < wiiboard2.txt > wiiboard2.js
-./txt2js.py temperature < temperature.txt > temperature.js
-./txt2js.py temperature_cpu < temperature_cpu.txt > temperature_cpu.js
-./txt2js.py temperature_gpu < temperature_gpu.txt > temperature_gpu.js
+for f in *.txt; do
+  n=${f%.*}
+  txt2js.py $n < $f > $n.js
+done
 
+[ -z "$WIIBEE_SHUTDOWN" ] && exit 0
+logger "Shutdown WittyPi"
 # http://www.uugear.com/portfolio/use-witty-pi-2-to-build-solar-powered-time-lapse-camera/
 # shutdown Raspberry Pi by pulling down GPIO-4
 gpio -g mode 4 out
 gpio -g write 4 0  # optional
 
+logger "Shutdown Raspberry"
 shutdown -h now

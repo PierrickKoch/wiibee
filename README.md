@@ -33,6 +33,8 @@ directly with the Raspberry Pi GPIO. See if the GPIO's 3.3V are enough.
 Check if other thermal sensor are available:
 
 ```
-watch -n1 "cat /sys/class/hwmon/hwmon*/temp*_input"
-watch -n1 "cat /sys/class/thermal/thermal_zone*/temp"
+find /sys -maxdepth 11 -name \*_input -o -name temp
+watch -n1 "cat /sys/class/hwmon/hwmon*/temp*_input /sys/class/thermal/thermal_zone*/temp"
 ```
+
+Display data with https://github.com/firehol/netdata
