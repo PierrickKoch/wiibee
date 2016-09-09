@@ -31,8 +31,9 @@ done > temperature.txt & pids="$! $pids"
 
 wait $pids
 
-./txt2js.py temperature < temperature.txt > temperature.js
-./txt2js.py wiiboard1 < wiiboard1.txt > wiiboard1.js
-./txt2js.py wiiboard2 < wiiboard2.txt > wiiboard2.js
+for f in *.txt; do
+  n=${f%.*}
+  ./txt2js.py $n < $f > $n.js
+done
 
 xdg-open index.html
