@@ -34,20 +34,31 @@
     float: left;
     width: 40px;
 }
+.swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 8px 0 0;
+}
+.label {
+    display: inline-block;
+}
 </style>
 
+<!-- http://code.shutterstock.com/rickshaw/examples/extensions.html -->
 <div id="chart_container">
     <div id="y_axis"></div>
     <div id="chart"></div>
     <div id="legend"></div>
-    <div id="slider"></div>
     <form id="offset_form" class="toggler">
-        <input type="radio" name="offset" id="lines" value="lines" checked>
+        <input type="radio" name="offset" id="lines" value="line" checked>
         <label class="lines" for="lines">lines</label><br>
-        <input type="radio" name="offset" id="stack" value="zero">
+        <input type="radio" name="offset" id="stack" value="stack">
         <label class="stack" for="stack">stack</label>
     </form>
 </div>
+<div id="range_slider"></div>
+<div id="hover_legend"></div>
 
 <script>
 var palette = new Rickshaw.Color.Palette();
@@ -55,7 +66,7 @@ var palette = new Rickshaw.Color.Palette();
 var format = d3.time.format("%s.N");
 var graph = new Rickshaw.Graph({
     element: document.getElementById("chart"),
-    width: 400,
+    width: 540,
     height: 240,
     renderer: 'line',
     series: [{
@@ -73,9 +84,47 @@ var graph = new Rickshaw.Graph({
     }],
 });
 
-var hoverDetail = new Rickshaw.Graph.HoverDetail({
-    graph: graph
+var hover_legend = document.querySelector('#hover_legend');
+var Hover = Rickshaw.Class.create(Rickshaw.Graph.HoverDetail, {
+
+    render: function(args) {
+
+        hover_legend.innerHTML = args.formattedXValue;
+
+        args.detail.sort(function(a, b) { return a.order - b.order }).forEach( function(d) {
+
+            var line = document.createElement('div');
+            line.className = 'line';
+
+            var swatch = document.createElement('div');
+            swatch.className = 'swatch';
+            swatch.style.backgroundColor = d.series.color;
+
+            var label = document.createElement('div');
+            label.className = 'label';
+            label.innerHTML = d.name + ": " + d.formattedYValue;
+
+            line.appendChild(swatch);
+            line.appendChild(label);
+
+            hover_legend.appendChild(line);
+
+            var dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.style.top = graph.y(d.value.y0 + d.value.y) + 'px';
+            dot.style.borderColor = d.series.color;
+
+            this.element.appendChild(dot);
+
+            dot.className = 'dot active';
+
+            this.show();
+
+        }, this );
+    }
 });
+
+var hover = new Hover( { graph: graph } ); 
 
 var legend = new Rickshaw.Graph.Legend({
     graph: graph,
@@ -101,21 +150,15 @@ var y_axis = new Rickshaw.Graph.Axis.Y({
     element: document.getElementById('y_axis'),
 });
 
-var offsetForm = document.getElementById('offset_form');
-
-offsetForm.addEventListener('change', function(e) {
-    var offsetMode = e.target.value;
-
-    if (offsetMode == 'lines') {
-        graph.setRenderer('line');
-        graph.offset = 'zero';
-    } else {
-        graph.setRenderer('stack');
-        graph.offset = offsetMode;
-    }
+document.getElementById('offset_form').addEventListener('change', function(e) {
+    graph.setRenderer(e.target.value);
     graph.render();
-
 }, false);
+
+var range_slider = new Rickshaw.Graph.RangeSlider( {
+    graph: graph,
+    element: document.getElementById('range_slider'),
+} );
 
 graph.render();
 
