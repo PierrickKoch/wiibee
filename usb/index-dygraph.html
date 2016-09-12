@@ -1,0 +1,30 @@
+<!doctype>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
+    <!-- data -->
+    <script src="temperature.js"></script>
+</head>
+<body>
+
+<style>
+</style>
+
+<!-- http://dygraphs.com/tutorial.html -->
+<div id="graphdiv3"
+  style="width:500px; height:300px;"></div>
+<script type="text/javascript">
+function get(data) {
+    var res = [];
+    for (index in data) {
+        res.push([new Date(1000*data[index][0]), data[index][1]]);
+    }
+    return res;
+}
+g3 = new Dygraph(document.getElementById("graphdiv3"), get(temperature),
+    {
+        labels: [ "time", "temp" ],
+    }
+);
+</script>
+
+</body>

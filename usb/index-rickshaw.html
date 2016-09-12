@@ -61,6 +61,14 @@
 <div id="hover_legend"></div>
 
 <script>
+function get(data) {
+    var res = [];
+    for (index in data) {
+        res.push({'x': data[index][0], 'y': data[index][1]});
+    }
+    return res;
+}
+
 var palette = new Rickshaw.Color.Palette();
 
 var format = d3.time.format("%s.N");
@@ -71,15 +79,15 @@ var graph = new Rickshaw.Graph({
     renderer: 'line',
     series: [{
         name: 'weight1 in Kg',
-        data: wiiboard1,
+        data: get(wiiboard1),
         color: palette.color(),
     }, {
         name: 'weight2 in Kg',
-        data: wiiboard2,
+        data: get(wiiboard2),
         color: palette.color(),
     }, {
         name: 'temperature in °C',
-        data: temperature,
+        data: get(temperature),
         color: palette.color(),
     }],
 });
