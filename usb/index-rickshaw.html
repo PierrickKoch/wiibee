@@ -62,11 +62,10 @@
 
 <script>
 function get(data) {
-    var res = [];
-    for (index in data) {
-        res.push({'x': data[index][0], 'y': data[index][1]});
-    }
-    return res;
+    data.forEach(function(elt, index, arr) {
+        arr[index] = {'x': elt[0], 'y': elt[1]};
+    });
+    return data;
 }
 
 var palette = new Rickshaw.Color.Palette();

@@ -1,30 +1,56 @@
 <!doctype>
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
+    <script src="http://dygraphs.com/extras/synchronizer.js"></script>
     <!-- data -->
     <script src="temperature.js"></script>
+    <script src="wiiboard1.js"></script>
+    <script src="wiiboard2.js"></script>
 </head>
 <body>
 
 <style>
+.graphdiv {
+    width: 500px;
+    height: 300px;
+}
 </style>
 
 <!-- http://dygraphs.com/tutorial.html -->
-<div id="graphdiv3"
-  style="width:500px; height:300px;"></div>
+<div id="graphdiv0" class="graphdiv"></div>
+<div id="graphdiv1" class="graphdiv"></div>
+<div id="graphdiv2" class="graphdiv"></div>
 <script type="text/javascript">
-function get(data) {
-    var res = [];
-    for (index in data) {
-        res.push([new Date(1000*data[index][0]), data[index][1]]);
-    }
-    return res;
+function dateString(y) {
+    var str = "" + new Date(y).getMilliseconds();
+    return Dygraph.dateString_(y) + "." + ('000'+str).substring(str.length);
 }
-g3 = new Dygraph(document.getElementById("graphdiv3"), get(temperature),
-    {
-        labels: [ "time", "temp" ],
-    }
-);
+function new_graph(data, name, id) {
+    data.forEach(function(elt, index, arr) {
+        arr[index] = [new Date(1000*elt[0]), elt[1]];
+    });
+    return new Dygraph(document.getElementById(id), data,
+        {
+            labels: [ "Date", name ],
+            axes : {
+              x : {
+                // axisLabelFormatter: dateString,
+                valueFormatter: dateString,
+              },
+            },
+        }
+    );
+}
+
+var g0 = new_graph(temperature, "temperature", "graphdiv0"),
+    g1 = new_graph(wiiboard1, "wiiboard1", "graphdiv1"),
+    g2 = new_graph(wiiboard2, "wiiboard2", "graphdiv2");
+
+var sync = Dygraph.synchronize(g0, g1, g2, {
+  selection: true,
+  zoom: true,
+});
+
 </script>
 
 </body>

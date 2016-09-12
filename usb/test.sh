@@ -25,4 +25,4 @@ for f in *.txt; do
   ./txt2js.py $n < $f > $n.js
 done
 
-xdg-open index.html
+xdg-open index-rickshaw.html
