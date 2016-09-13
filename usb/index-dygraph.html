@@ -16,7 +16,7 @@
 }
 </style>
 
-<!-- http://dygraphs.com/tutorial.html -->
+<!-- TODO http://dygraphs.com/gallery/#g/independent-series -->
 <div id="graphdiv0" class="graphdiv"></div>
 <div id="graphdiv1" class="graphdiv"></div>
 <div id="graphdiv2" class="graphdiv"></div>
@@ -31,6 +31,8 @@ function new_graph(data, name, id) {
     });
     return new Dygraph(document.getElementById(id), data,
         {
+            // http://dygraphs.com/gallery/#g/range-selector
+            showRangeSelector: true,
             labels: [ "Date", name ],
             axes : {
               x : {
