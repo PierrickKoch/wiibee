@@ -18,4 +18,4 @@ for i in $(seq $N_LOOP); do
 done
 python txt2js.py wiibee < wiibee.txt > wiibee.js
 
-xdg-open index-dygraph.html
+xdg-open index.html
