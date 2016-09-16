@@ -7,7 +7,9 @@ usage: autorun.py [-d] "00:1e:35:fd:11:fc" "00:22:4c:6e:12:6c" >> data.txt
 """
 import sys
 import time
+import logging
 import threading
+import subprocess
 from wiiboard import logger, WiiboardSampling
 
 class WiiboardThreaded(WiiboardSampling):
@@ -34,9 +36,11 @@ def cpu_temp(filepath='/sys/class/thermal/thermal_zone0/temp'):
 def wtp_temp(): # TODO i2c read/write use `smbus`
     return float(subprocess.check_output(['/bin/bash', 'wtp_temp.sh', 'get']))
 
-wiiboards = [WiiboardPrint(address) for address in sys.argv[1:]]
+wiiboards = [WiiboardThreaded(address) for address in sys.argv[1:]]
 
 for i in xrange(10):
     time.sleep(2)
-    print([time.time(), cpu_temp(), wtp_temp()] +
-          [wiiboard.average() for wiiboard in wiiboards])
+    print("%.3f %.2f %.2f "%(time.time(), cpu_temp(), wtp_temp()) +
+          " ".join(["%.2f"%wiiboard.average() for wiiboard in wiiboards]))
+
+[wiiboard.close() for wiiboard in wiiboards]

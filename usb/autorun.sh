@@ -1,9 +1,9 @@
 #! /bin/bash
 
-DEBUG="-d" # set DEBUG="" to disable verbose log
+DEBUG="" # set DEBUG="" to disable verbose log
 
-GPIO1=16 # http://pinout.xyz/pinout/pin16_gpio23
-GPIO2=18 # http://pinout.xyz/pinout/pin18_gpio24
+GPIO1=4 # http://pinout.xyz/pinout/pin16_gpio23
+GPIO2=5 # http://pinout.xyz/pinout/pin18_gpio24
 BTADDR1="00:1e:35:fd:11:fc"
 BTADDR2="00:22:4c:6e:12:6c"
 
@@ -18,7 +18,8 @@ gpio write $GPIO1 1
 gpio write $GPIO2 1
 
 logger "Start listenning to the mass measurements"
-python autorun.sh $DEBUG $BTADDR1 $BTADDR2 2>> wiibee.log >> wiibee.txt
+python autorun.py $DEBUG $BTADDR1 $BTADDR2 2>> wiibee.log >> wiibee.txt
+logger "Stoped listenning"
 python txt2js.py wiibee < wiibee.txt > wiibee.js
 
 [ -z "$WIIBEE_SHUTDOWN" ] && exit 0
