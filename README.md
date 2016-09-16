@@ -22,9 +22,8 @@ The balance power consumtion is around 160mW.
 TODO
 ----
 
-Studdy the Wii Fit Balance Board battery and sync button connector electric
-wiring, see if can get rid of the relay and short-circuit the red sync button
-directly with the Raspberry Pi GPIO. See if the GPIO's 3.3V are enough.
+Studdy the Wii Fit Balance Board electric wiring,
+find how can we read mass directly from the strain gauges.
 
 * https://www.ifixit.com/Guide/Disassembling+Wii+Balance+Board/6474#s27965
 * https://www.ifixit.com/Guide/Wii+Balance+Board+Frame+Replacement/30899
