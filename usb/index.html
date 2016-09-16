@@ -1,7 +1,7 @@
 <!doctype>
 <head>
     <script type="text/javascript" src="dygraph-combined.min.js"></script>
-    <script src="wiibee.js"></script>
+    <script type="text/javascript" src="wiibee.js"></script>
 </head>
 <body>
 
@@ -19,21 +19,27 @@
 wiibee.forEach(function(elt, index, arr) {
     arr[index][0] = new Date(1000*elt[0]);
 });
-var labels = [ "Date", "T°CPU", "T°GPU", "T°WittyPi"], wiiboards = [];
-// wiiboards = ["Mass %i"%i for i in xrange(wiibee[0].length - labels.length)]
+var labels = ["Date", "T°CPU", "T"], wiiboards = [];
 for (var i = 0; i < wiibee[0].length - labels.length; i++) {
-    wiiboards = wiiboards.concat("Mass "+(i+1));
+    wiiboards = wiiboards.concat("M"+(i+1));
 }
-g = new Dygraph(document.getElementById('graphdiv'), wiibee,
-    {
-        // http://dygraphs.com/gallery/#g/range-selector
-        // showRangeSelector: true,
-        labels: labels.concat(wiiboards),
-        axes : { x : { valueFormatter: function(y) {
-            return new Date(y).toISOString();
-        }, }, },
-    }
-);
+g = new Dygraph(document.getElementById('graphdiv'), wiibee, {
+    // http://dygraphs.com/gallery/#g/range-selector
+    // showRangeSelector: true,
+    labels: labels.concat(wiiboards),
+    axes: {
+        x: {
+            valueFormatter: function(value) {
+                return new Date(value).toISOString();
+            },
+        },
+        y: {
+            valueFormatter: function(value) {
+                return (value < 10 ? '0' : '') + value.toFixed(2);
+            },
+        },
+    },
+});
 
 </script>
 

@@ -6,8 +6,6 @@ GPIO1=16 # http://pinout.xyz/pinout/pin16_gpio23
 GPIO2=18 # http://pinout.xyz/pinout/pin18_gpio24
 BTADDR1="00:1e:35:fd:11:fc"
 BTADDR2="00:22:4c:6e:12:6c"
-N_LOOP=10
-T_SLEEP=2
 
 logger "Simulate press red sync button on the Wii Board"
 # http://wiringpi.com/the-gpio-utility/

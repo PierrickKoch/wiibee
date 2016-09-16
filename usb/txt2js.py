@@ -7,7 +7,7 @@ without web server.
 
 usage: txt2js.py name < file.txt > file.js
 
-file.txt must be formated as: "float float\n"*
+file.txt must be formated as: "float*\n"*
 """
 import sys
 

@@ -31,10 +31,6 @@ def cpu_temp(filepath='/sys/class/thermal/thermal_zone0/temp'):
     with open(filepath) as f:
         return float(f.read()) / 1000
 
-def gpu_temp(): # http://www.elinux.org/RPI_vcgencmd_usage
-    temp = subprocess.check_output(['/opt/vc/bin/vcgencmd', 'measure_temp'])
-    return float(temp[6:9])
-
 def wtp_temp(): # TODO i2c read/write use `smbus`
     return float(subprocess.check_output(['/bin/bash', 'wtp_temp.sh', 'get']))
 
@@ -42,5 +38,5 @@ wiiboards = [WiiboardPrint(address) for address in sys.argv[1:]]
 
 for i in xrange(10):
     time.sleep(2)
-    print([time.time(), cpu_temp(), gpu_temp(), wtp_temp()] +
+    print([time.time(), cpu_temp(), wtp_temp()] +
           [wiiboard.average() for wiiboard in wiiboards])

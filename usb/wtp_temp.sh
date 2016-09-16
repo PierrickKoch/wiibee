@@ -1,6 +1,7 @@
 #! /bin/bash
 # `get_temperature` from `wittyPi/utilities.sh:415` without Fahrenheit
 # https://github.com/uugear/Witty-Pi-2/blob/master/wittyPi/utilities.sh#L436
+# i2cget/i2cset provided by i2c-tools debian package
 i2c_read()
 {
   local retry=0

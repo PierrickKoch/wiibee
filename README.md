@@ -30,11 +30,4 @@ directly with the Raspberry Pi GPIO. See if the GPIO's 3.3V are enough.
 * https://www.ifixit.com/Guide/Wii+Balance+Board+Frame+Replacement/30899
 * https://www.raspberrypi.org/documentation/usage/gpio-plus-and-raspi2/
 
-Check if other thermal sensor are available:
-
-```
-find /sys -maxdepth 11 -name \*_input -o -name temp
-watch -n1 "cat /sys/class/hwmon/hwmon*/temp*_input /sys/class/thermal/thermal_zone*/temp"
-```
-
 Display data with https://github.com/firehol/netdata
