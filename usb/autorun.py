@@ -26,10 +26,21 @@ if '-d' in sys.argv:
     logger.setLevel(logging.DEBUG)
     sys.argv.remove('-d')
 
+def try_or_zero(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            logger.error("%s error %s", func.__name__, e)
+            return 0
+    return wrapper
+
+@try_or_zero
 def cpu_temp(filepath='/sys/class/thermal/thermal_zone0/temp'):
     with open(filepath) as f:
         return float(f.read()) / 1000
 
+@try_or_zero
 def wtp_temp(): # TODO i2c read/write use `smbus`
     return float(subprocess.check_output(['/bin/bash', 'wtp_temp.sh', 'get']))
 
