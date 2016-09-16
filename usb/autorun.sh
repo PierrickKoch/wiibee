@@ -10,9 +10,6 @@ N_LOOP=10
 T_SLEEP=2
 
 logger "Simulate press red sync button on the Wii Board"
-
-. wtp_temp.sh # provides get_temperature()
-
 # http://wiringpi.com/the-gpio-utility/
 gpio mode $GPIO1 out
 gpio mode $GPIO2 out
@@ -23,29 +20,8 @@ gpio write $GPIO1 1
 gpio write $GPIO2 1
 
 logger "Start listenning to the mass measurements"
-
-pids=""
-# https://github.com/pierriko/wiiboard
-python wiiboard.py $DEBUG $BTADDR1 2>> wiiboard1.log >> wiiboard1.txt & pids="$! $pids"
-python wiiboard.py $DEBUG $BTADDR2 2>> wiiboard2.log >> wiiboard2.txt & pids="$! $pids"
-
-for i in $(seq $N_LOOP); do
-  echo "$(date +%s.%N) $(get_temperature)" >> temperature.txt
-  # https://www.kernel.org/doc/Documentation/thermal/sysfs-api.txt
-  t=$(awk '{ print $N / 1000.0 }' /sys/class/thermal/thermal_zone0/temp)
-  echo "$(date +%s.%N) $t" >> temperature_cpu.txt
-  # http://www.elinux.org/RPI_vcgencmd_usage
-  t=$(/opt/vc/bin/vcgencmd measure_temp|cut -c6-9)
-  echo "$(date +%s.%N) $t" >> temperature_gpu.txt
-  sleep $T_SLEEP
-done & pids="$! $pids"
-
-wait $pids
-
-for f in *.txt; do
-  n=${f%.*}
-  python txt2js.py $n < $f > $n.js
-done
+python autorun.sh $DEBUG $BTADDR1 $BTADDR2 2>> wiibee.log >> wiibee.txt
+python txt2js.py wiibee < wiibee.txt > wiibee.js
 
 [ -z "$WIIBEE_SHUTDOWN" ] && exit 0
 logger "Shutdown WittyPi"

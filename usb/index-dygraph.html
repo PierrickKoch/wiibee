@@ -1,57 +1,39 @@
 <!doctype>
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
-    <script src="http://dygraphs.com/extras/synchronizer.js"></script>
-    <!-- data -->
-    <script src="temperature.js"></script>
-    <script src="wiiboard1.js"></script>
-    <script src="wiiboard2.js"></script>
+    <script type="text/javascript" src="dygraph-combined.min.js"></script>
+    <script src="wiibee.js"></script>
 </head>
 <body>
 
 <style>
 .graphdiv {
-    width: 500px;
-    height: 300px;
+    width: 600px;
+    height: 200px;
 }
 </style>
 
-<!-- TODO http://dygraphs.com/gallery/#g/independent-series -->
-<div id="graphdiv0" class="graphdiv"></div>
-<div id="graphdiv1" class="graphdiv"></div>
-<div id="graphdiv2" class="graphdiv"></div>
+<div id="graphdiv" class="graphdiv"></div>
+
 <script type="text/javascript">
-function dateString(y) {
-    var str = "" + new Date(y).getMilliseconds();
-    return Dygraph.dateString_(y) + "." + ('000'+str).substring(str.length);
-}
-function new_graph(data, name, id) {
-    data.forEach(function(elt, index, arr) {
-        arr[index] = [new Date(1000*elt[0]), elt[1]];
-    });
-    return new Dygraph(document.getElementById(id), data,
-        {
-            // http://dygraphs.com/gallery/#g/range-selector
-            showRangeSelector: true,
-            labels: [ "Date", name ],
-            axes : {
-              x : {
-                // axisLabelFormatter: dateString,
-                valueFormatter: dateString,
-              },
-            },
-        }
-    );
-}
 
-var g0 = new_graph(temperature, "temperature", "graphdiv0"),
-    g1 = new_graph(wiiboard1, "wiiboard1", "graphdiv1"),
-    g2 = new_graph(wiiboard2, "wiiboard2", "graphdiv2");
-
-var sync = Dygraph.synchronize(g0, g1, g2, {
-  selection: true,
-  zoom: true,
+wiibee.forEach(function(elt, index, arr) {
+    arr[index][0] = new Date(1000*elt[0]);
 });
+var labels = [ "Date", "T°CPU", "T°GPU", "T°WittyPi"], wiiboards = [];
+// wiiboards = ["Mass %i"%i for i in xrange(wiibee[0].length - labels.length)]
+for (var i = 0; i < wiibee[0].length - labels.length; i++) {
+    wiiboards = wiiboards.concat("Mass "+(i+1));
+}
+g = new Dygraph(document.getElementById('graphdiv'), wiibee,
+    {
+        // http://dygraphs.com/gallery/#g/range-selector
+        // showRangeSelector: true,
+        labels: labels.concat(wiiboards),
+        axes : { x : { valueFormatter: function(y) {
+            return new Date(y).toISOString();
+        }, }, },
+    }
+);
 
 </script>
 
