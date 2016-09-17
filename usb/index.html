@@ -20,7 +20,7 @@ wiibee.forEach(function(elt, index, arr) {
     arr[index][0] = new Date(1000*elt[0]);
 });
 var labels = ["Date", "T°CPU", "T"], wiiboards = [];
-for (var i = 0; i < wiibee[0].length - labels.length; i++) {
+for (var i = 0; i < 99; i++) {
     wiiboards = wiiboards.concat("M"+(i+1));
 }
 g = new Dygraph(document.getElementById('graphdiv'), wiibee, {
