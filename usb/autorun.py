@@ -16,9 +16,6 @@ class WiiboardThreaded(WiiboardSampling):
     def __init__(self, address=None):
         self.thread = threading.Thread(target=self.loop)
         WiiboardSampling.__init__(self, address)
-    def connect(self, address):
-        WiiboardSampling.connect(self, address)
-        self.thread.start()
     def average(self):
         # Copy deque content by using list() copy constructor
         #   to avoid: RuntimeError: deque mutated during iteration
@@ -37,6 +34,8 @@ def wtp_temp(): # TODO i2c read/write use `smbus`
     return float(subprocess.check_output(['/bin/bash', 'wtp_temp.sh', 'get']))
 
 wiiboards = [WiiboardThreaded(address) for address in sys.argv[1:]]
+# first connect then listen all balance, try to avoid connection refused error
+[wiiboard.thread.start() for wiiboard in wiiboards]
 
 for i in xrange(10):
     time.sleep(2)
