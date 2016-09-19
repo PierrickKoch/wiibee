@@ -13,4 +13,4 @@ import sys
 
 name = sys.argv[1]
 data = [map(float, line.split()) for line in sys.stdin.readlines()]
-print("%s = %r"%(name, data))
+print("%s = [\n%s,\n]"%(name, ',\n'.join('%r'%line for line in data)))
