@@ -21,6 +21,7 @@ export PATH="${USB_DIR}:${PATH}"
 [ -x "${USB_DIR}/${SCRIPT}" ] || exit 2
 
 cd $USB_DIR
-# if we have connection, update scripts
-# TODO git fetch origin && git merge origin/master
+# TODO if we have connection, if update enabled, update scripts
+# wget -q --spider http://pierriko.com/wiibee/update
+# git fetch origin && git merge origin/master
 . $SCRIPT
