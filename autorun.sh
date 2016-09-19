@@ -2,7 +2,7 @@
 
 # Relay PIN, see: http://pinout.xyz/pinout/wiringpi
 GPIOS="4 5" # http://pinout.xyz/pinout/pin16_gpio23
-# use: hcitool scan, or: python wiiboard.py
+# Bluetooth MAC, use: hcitool scan, or: python wiiboard.py
 BTADDR="00:1e:35:fd:11:fc 00:22:4c:6e:12:6c"
 
 logger "Simulate press red sync button on the Wii Board"
@@ -25,10 +25,8 @@ git commit wiibee.js -m"[data] $(date -Is)"
 
 [ -z "$WIIBEE_SHUTDOWN" ] && exit 0
 logger "Shutdown WittyPi"
-# http://www.uugear.com/portfolio/use-witty-pi-2-to-build-solar-powered-time-lapse-camera/
 # shutdown Raspberry Pi by pulling down GPIO-4
 gpio -g mode 4 out
 gpio -g write 4 0  # optional
-
 logger "Shutdown Raspberry"
-shutdown -h now
+shutdown -h now # in case WittyPi did not shutdown
