@@ -12,10 +12,10 @@ logger "Check if USB disk is plugged in"
 mount $USB_DEV $USB_MNT
 cd $USB_MNT
 git clone https://github.com/pierriko/wiibee.git; cd wiibee
-git checout -B gh-pages
 wget https://raw.githubusercontent.com/pierriko/wiiboard/master/wiiboard.py
-touch wiibee.js
-git commit -a wiibee.js -m"[data] first commit - wiibee installed"
+touch wiibee.js; git add wiibee.js
+git commit wiibee.js -m"[data] first commit $(date -Is)"
+# TODO https://help.github.com/articles/generating-an-ssh-key/
 git remote add ssh git@github.com:pierriko/wiibee.git
 cp wittyPi/schedule.wpi ~/wittyPi/
 cp wittyPi/extraTasks.sh ~/wittyPi/

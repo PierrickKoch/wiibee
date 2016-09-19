@@ -1,27 +1,27 @@
 #! /bin/bash
 
-DEBUG="" # set DEBUG="-d" to enable verbose log
-# Realy PIN, see: http://pinout.xyz/pinout/wiringpi
-GPIO1=4 # http://pinout.xyz/pinout/pin16_gpio23
-GPIO2=5 # http://pinout.xyz/pinout/pin18_gpio24
+# Relay PIN, see: http://pinout.xyz/pinout/wiringpi
+GPIOS="4 5" # http://pinout.xyz/pinout/pin16_gpio23
 # use: hcitool scan, or: python wiiboard.py
-BTADDR1="00:1e:35:fd:11:fc"
-BTADDR2="00:22:4c:6e:12:6c"
+BTADDR="00:1e:35:fd:11:fc 00:22:4c:6e:12:6c"
 
 logger "Simulate press red sync button on the Wii Board"
 # http://wiringpi.com/the-gpio-utility/
-gpio mode $GPIO1 out
-gpio mode $GPIO2 out
-gpio write $GPIO1 0
-gpio write $GPIO2 0
+for ngpio in $GPIOS; do
+    gpio mode $ngpio out
+    gpio write $ngpio 0
+done
 sleep 0.2
-gpio write $GPIO1 1
-gpio write $GPIO2 1
+for ngpio in $GPIOS; do
+    gpio write $ngpio 1
+done
 
 logger "Start listenning to the mass measurements"
-python autorun.py $DEBUG $BTADDR1 $BTADDR2 2>> wiibee.log >> wiibee.txt
+python autorun.py $BTADDR 2>> autorun.log >> wiibee.txt
 logger "Stoped listenning"
 python txt2js.py wiibee < wiibee.txt > wiibee.js
+git commit wiibee.js -m"[data] $(date -Is)"
+# TODO git push ssh master
 
 [ -z "$WIIBEE_SHUTDOWN" ] && exit 0
 logger "Shutdown WittyPi"

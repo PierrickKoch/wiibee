@@ -18,4 +18,9 @@ SCRIPT="autorun.sh"
 USB_DIR="${USB_MNT}/wiibee"
 export WIIBEE_SHUTDOWN=1
 export PATH="${USB_DIR}:${PATH}"
-[ -x "${USB_DIR}/${SCRIPT}" ] && cd $USB_DIR && . $SCRIPT || exit 2
+[ -x "${USB_DIR}/${SCRIPT}" ] || exit 2
+
+cd $USB_DIR
+# if we have connection, update scripts
+# TODO git fetch origin && git merge origin/master
+. $SCRIPT
