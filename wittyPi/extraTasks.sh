@@ -9,12 +9,13 @@
 # WiiBee mount and autorun USB
 #
 USB_DEV=/dev/sda1
-USB_MNT=/mnt/usb
+USB_MNT=/mnt/bee1
 logger "Check if USB disk is plugged in"
 [ -e $USB_DEV ] && logger "mount $USB_DEV" || logger "missing $USB_DEV"
 [ -d $USB_MNT ] || mkdir -p $USB_MNT
 mount $USB_DEV $USB_MNT
 SCRIPT="autorun.sh"
+USB_DIR="${USB_MNT}/wiibee"
 export WIIBEE_SHUTDOWN=1
-export PATH="${USB_MNT}:${PATH}"
-[ -x "${USB_MNT}/${SCRIPT}" ] && cd $USB_MNT && . $SCRIPT || exit 2
+export PATH="${USB_DIR}:${PATH}"
+[ -x "${USB_DIR}/${SCRIPT}" ] && cd $USB_DIR && . $SCRIPT || exit 2
