@@ -25,6 +25,8 @@ class WiiboardThreaded(WiiboardSampling):
 if '-d' in sys.argv:
     logger.setLevel(logging.DEBUG)
     sys.argv.remove('-d')
+else:
+    logger.setLevel(logging.WARNING)
 
 def try_or_zero(func):
     def wrapper(*args, **kwargs):
