@@ -1,8 +1,8 @@
 <!doctype>
 <head>
     <meta charset="utf-8" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
-    <script src="http://dygraphs.com/extras/synchronizer.js"></script>
+    <script type="text/javascript" src="js/dygraph-combined.min.js"></script>
+    <script type="text/javascript" src="js/synchronizer.js"></script>
     <script type="text/javascript" src="wiibee.js"></script>
 </head>
 <body>
@@ -18,9 +18,6 @@
 
 function getColors(num, sat, val) {
     var colors = [];
-    // These are used for when no custom colors are specified.
-    sat = typeof sat !== 'undefined' ? sat : 1.0;
-    val = typeof val !== 'undefined' ? val : 0.5;
     var half = Math.ceil(num / 2);
     for (var i = 0; i < num; i++) {
         // alternate colors for high contrast.
@@ -34,7 +31,7 @@ var labels = ["Date", "T°CPU", "T", "M1", "M2", "M3", "M4", "M5", "M6", "M7"];
 // must calibrate each balance and setup the offsets accordingly
 var offset = [     0,       0,   0,    1,   -1,    2,   -2,    3,   -3,    4];
 var multi  = [    [],      [],  [],   [],    [],  [],   [],   [],   [],   []];
-var colors = getColors(6);
+var colors = getColors(6, 1.0, 0.5);
 
 wiibee.forEach(function(elt1, index1, arr1) {
     elt1.forEach(function(elt2, index2, arr2) {
