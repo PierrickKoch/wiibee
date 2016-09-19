@@ -1,9 +1,10 @@
 #! /bin/bash
 
-DEBUG="" # set DEBUG="" to disable verbose log
-
+DEBUG="" # set DEBUG="-d" to enable verbose log
+# Realy PIN, see: http://pinout.xyz/pinout/wiringpi
 GPIO1=4 # http://pinout.xyz/pinout/pin16_gpio23
 GPIO2=5 # http://pinout.xyz/pinout/pin18_gpio24
+# use: hcitool scan, or: python wiiboard.py
 BTADDR1="00:1e:35:fd:11:fc"
 BTADDR2="00:22:4c:6e:12:6c"
 
