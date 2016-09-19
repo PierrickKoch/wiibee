@@ -1,0 +1,72 @@
+<!doctype>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
+    <script src="http://dygraphs.com/extras/synchronizer.js"></script>
+    <script type="text/javascript" src="wiibee.js"></script>
+</head>
+<body>
+
+<style>
+.graphdiv {
+    width: 600px;
+    height: 200px;
+}
+</style>
+
+<script type="text/javascript">
+
+function getColors(num, sat, val) {
+    var colors = [];
+    // These are used for when no custom colors are specified.
+    sat = typeof sat !== 'undefined' ? sat : 1.0;
+    val = typeof val !== 'undefined' ? val : 0.5;
+    var half = Math.ceil(num / 2);
+    for (var i = 0; i < num; i++) {
+        // alternate colors for high contrast.
+        var idx = i % 2 ? (half + (i + 1)/ 2) : Math.ceil((i + 1) / 2);
+        var hue = (1.0 * idx / (1 + num));
+        colors.push(Dygraph.hsvToRGB(hue, sat, val));
+    }
+    return colors;
+}
+var multi  = [[], [], [], [], [], [], [], [], [], []];
+var labels = ["Date", "T°CPU", "T", "M1", "M2", "M3", "M4", "M5", "M6", "M7"];
+var colors = getColors(6);
+
+wiibee.forEach(function(elt1, index1, arr1) {
+    elt1.forEach(function(elt2, index2, arr2) {
+        multi[index2].push([new Date(1000*elt1[0]), elt2]);
+    });
+});
+
+function gr(index) {
+    var elt = document.createElement("div");
+    elt.className = "graphdiv";
+    document.body.appendChild(elt);
+    return new Dygraph(elt, multi[index], {
+        labels: ["Date", labels[index]],
+        colors: [colors[index-1]],
+        axes: {
+            x: {
+                valueFormatter: function(value) {
+                    return new Date(value).toISOString();
+                },
+            },
+            y: {
+                valueFormatter: function(value) {
+                    return (value < 10 ? '0' : '') + value.toFixed(2);
+                },
+            },
+        },
+    });
+}
+
+var sync = Dygraph.synchronize([gr(1), gr(2), gr(3), gr(4), gr(5), gr(6)], {
+  selection: true,
+  zoom: true,
+});
+
+</script>
+
+</body>
