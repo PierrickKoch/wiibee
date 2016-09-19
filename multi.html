@@ -30,13 +30,15 @@ function getColors(num, sat, val) {
     }
     return colors;
 }
-var multi  = [[], [], [], [], [], [], [], [], [], []];
 var labels = ["Date", "T°CPU", "T", "M1", "M2", "M3", "M4", "M5", "M6", "M7"];
+// must calibrate each balance and setup the offsets accordingly
+var offset = [     0,       0,   0,    1,   -1,    2,   -2,    3,   -3,    4];
+var multi  = [    [],      [],  [],   [],    [],  [],   [],   [],   [],   []];
 var colors = getColors(6);
 
 wiibee.forEach(function(elt1, index1, arr1) {
     elt1.forEach(function(elt2, index2, arr2) {
-        multi[index2].push([new Date(1000*elt1[0]), elt2]);
+        multi[index2].push([new Date(1000*elt1[0]), elt2+offset[index2]]);
     });
 });
 
