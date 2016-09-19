@@ -30,3 +30,17 @@ find how can we read mass directly from the strain gauges.
 * https://www.raspberrypi.org/documentation/usage/gpio-plus-and-raspi2/
 
 Display data with https://github.com/firehol/netdata
+
+
+STATS
+-----
+
+A data row contains: `time cpu_temp temp mass*`, example:
+`1474272540.431 39.50 10.00 20.00 21.00 22.00 23.00`, a row contains 51 bytes
+for 4 beehives (75 for 8).
+
+If we do 10 measurements per boot and boot every 1.5 hours, this means:
+```
+51 * 10 * (24 / 1.5) = 8160 # bytes per day
+8160 * 30 / 1024 = 239 # KB per month
+```
