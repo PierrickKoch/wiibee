@@ -27,6 +27,7 @@ First, install WittyPi2, see: http://www.uugear.com/product/wittypi2
 cd; wget http://www.uugear.com/repo/WittyPi2/installWittyPi.sh
 sudo sh installWittyPi.sh
 ```
+
 Then install wiibee (plug an empty USB stick in your Raspberry)
 ```
 cd; wget http://pierriko.com/wiibee/install.sh

@@ -27,17 +27,18 @@ function getColors(num, sat, val) {
     }
     return colors;
 }
-var labels = ["Date", "T°CPU", "T", "M1", "M2", "M3", "M4", "M5", "M6", "M7"];
 // must calibrate each balance and setup the offsets accordingly
 var offset = [     0,       0,   0,    1,   -1,    2,   -2,    3,   -3,    4];
+var labels = ["Date", "T°CPU", "T", "M1", "M2", "M3", "M4", "M5", "M6", "M7"];
 var multi  = [    [],      [],  [],   [],    [],  [],   [],   [],   [],   []];
-var colors = getColors(6, 1.0, 0.5);
-
+var ndata  = 0;
 wiibee.forEach(function(elt1, index1, arr1) {
     elt1.forEach(function(elt2, index2, arr2) {
         multi[index2].push([new Date(1000*elt1[0]), elt2+offset[index2]]);
+        ndata = Math.max(index2,ndata);
     });
 });
+var colors = getColors(ndata, 1.0, 0.5);
 
 function gr(index) {
     var elt = document.createElement("div");
@@ -54,14 +55,18 @@ function gr(index) {
             },
             y: {
                 valueFormatter: function(value) {
-                    return (value < 10 ? '0' : '') + value.toFixed(2);
+                    return (value < 10 && value >= 0 ? '0' : '') + value.toFixed(2);
                 },
             },
         },
     });
 }
+var gs = [];
+for (var i = 1; i < ndata+1; i++) {
+    gs.push(gr(i));
+}
 
-var sync = Dygraph.synchronize([gr(1), gr(2), gr(3), gr(4), gr(5), gr(6)], {
+var sync = Dygraph.synchronize(gs, {
   selection: true,
   zoom: true,
 });
