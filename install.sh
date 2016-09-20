@@ -16,7 +16,9 @@ git clone https://github.com/pierriko/wiibee.git; cd wiibee
 wget https://raw.githubusercontent.com/pierriko/wiiboard/master/wiiboard.py
 touch wiibee.js; git add wiibee.js
 git commit wiibee.js -m"[data] first commit $(date -Is)"
-# TODO https://help.github.com/articles/generating-an-ssh-key/
+# TODO setup a new ssh key between the Raspberry and GitHub
+# https://help.github.com/articles/generating-an-ssh-key/
+# https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md
 git remote add ssh git@github.com:pierriko/wiibee.git
 cp wittyPi/schedule.wpi ~/wittyPi/
 cp wittyPi/extraTasks.sh ~/wittyPi/

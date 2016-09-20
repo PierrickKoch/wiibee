@@ -3,20 +3,14 @@ WiiBee
 
 Manage beehives with RaspberryPi 3, Wii Fit Balance Board, and a WittyPi.
 
-The shutdown command is located on the USB autorun script, this way if you want
-to use the Raspberry, you can simply remove the USB drive.
-
-The balance power consumtion is around 160mW.
-
-| mode \\ voltage |  6V  |  5V  |
-| --------------- | ---- | ---- |
-|    stream       | 27mA | 32mA |
-|    status       | 25mA | 30mA |
-
-
 * http://www.uugear.com/product/wittypi2/
 * http://www.uugear.com/portfolio/use-witty-pi-2-to-build-solar-powered-time-lapse-camera/
 * https://www.leboncoin.fr/consoles_jeux_video/offres?q=wii+fit&pe=3
+
+*[NOTE]* The **shutdown** command is located on the USB autorun script,
+this way if you want to use the Raspberry, you can simply remove the USB drive,
+you will have 5 minutes to login and disable schedule script with:
+`sudo /home/pi/wittyPi/wittyPi.sh`
 
 
 INSTALL
@@ -34,6 +28,18 @@ cd; wget http://pierriko.com/wiibee/install.sh
 sudo sh install.sh
 ```
 
+Edit `/mnt/bee1/wiibee/autorun.sh`, add the Bluetooth address of each Wii Fit
+balance board and the GPIO PIN number of each relay.
+
+You can get the Bluetooth MAC address using `hcitool scan` or
+`python /mnt/bee1/wiibee/wiiboard.py` after pressing the red sync button.
+
+Electric wiring coming soon.
+
+For GitHub integration, fork the wiibee repo, add a ssh key, edit the remote in
+`/mnt/bee1/wiibee`, and setup GitHub pages:
+* https://help.github.com/articles/generating-an-ssh-key/
+* https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/
 
 TODO
 ----
@@ -60,3 +66,10 @@ If we do 10 measurements per boot and boot every 1.5 hours, this means:
 51 * 10 * (24 / 1.5) = 8160 # bytes per day
 8160 * 30 / 1024 = 239 # KB per month
 ```
+
+A Wii Fit balance power consumtion is around 160mW.
+
+| mode \\ voltage |  6V  |  5V  |
+| --------------- | ---- | ---- |
+|    stream       | 27mA | 32mA |
+|    status       | 25mA | 30mA |
