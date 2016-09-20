@@ -10,9 +10,8 @@
 #
 USB_DEV=/dev/sda1
 USB_MNT=/mnt/bee1
-logger "Check if USB disk is plugged in"
-[ -e $USB_DEV ] && logger "mount $USB_DEV" || logger "missing $USB_DEV"
-[ -d $USB_MNT ] || mkdir -p $USB_MNT
+logger "Check if USB disk $USB_DEV is plugged in"
+[ -e $USB_DEV ] && logger "mount $USB_DEV" || exit 1
 mount $USB_DEV $USB_MNT
 SCRIPT="autorun.sh"
 USB_DIR="${USB_MNT}/wiibee"

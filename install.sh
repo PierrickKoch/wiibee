@@ -7,8 +7,8 @@
 USB_DEV=/dev/sda1
 USB_MNT=/mnt/bee1
 python -c'import bluetooth' 2>/dev/null || apt-get install python-bluez
-echo "Check if USB disk is plugged in"
-[ -e $USB_DEV ] && echo "mount $USB_DEV" || echo "missing $USB_DEV"
+echo "Check if USB disk $USB_DEV is plugged in"
+[ -e $USB_DEV ] || exit 1
 [ -d $USB_MNT ] || mkdir -p $USB_MNT
 mount $USB_DEV $USB_MNT
 cd $USB_MNT
