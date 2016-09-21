@@ -28,8 +28,9 @@ function getColors(num, sat, val) {
     return colors;
 }
 // must calibrate each balance and setup the offsets accordingly
-var offset = [     0,       0,   0,    1,   -1,    2,   -2,    3,   -3,    4];
-var labels = ["Date", "T°CPU", "T", "M1", "M2", "M3", "M4", "M5", "M6", "M7"];
+var offset = [     0,       0,  -9, -0.9,  4.4,  2.5,    0,    0,    0,    0];
+//  labels = ["Date", "T°CPU", "T", "M1", "M2", "M3", "M4", "M5", "M6", "M7"];
+var labels = ["Date", "T°CPU", "T", "Fleurs", "Papillon", "M3", "M4", "M5", "M6", "M7"];
 var multi  = [    [],      [],  [],   [],    [],  [],   [],   [],   [],   []];
 var ndata  = 0;
 wiibee.forEach(function(elt1, index1, arr1) {
@@ -47,6 +48,7 @@ function gr(index) {
     return new Dygraph(elt, multi[index], {
         labels: ["Date", labels[index]],
         colors: [colors[index-1]],
+        valueRange: [5, 55],
         axes: {
             x: {
                 valueFormatter: function(value) {
