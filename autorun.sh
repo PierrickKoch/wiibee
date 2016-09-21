@@ -4,6 +4,13 @@
 GPIOS="4 5" # http://pinout.xyz/pinout/pin16_gpio23
 # Bluetooth MAC, use: hcitool scan, or: python wiiboard.py
 BTADDR="00:1e:35:fd:11:fc 00:22:4c:6e:12:6c"
+#      "00:1e:35:fd:11:fc 00:22:4c:6e:12:6c 00:1E:35:FF:B0:04"
+
+sleep 12 # FIXME "wait" for dhcpd timeout
+# if BT failed: sudo systemctl status hciuart.service
+hciconfig > /dev/null || hciattach /dev/serial1 bcm43xx 921600 noflow -
+# try to install raspberrypi-sys-mods
+# try apt-get install --reinstall pi-bluetooth
 
 logger "Simulate press red sync button on the Wii Board"
 # http://wiringpi.com/the-gpio-utility/
