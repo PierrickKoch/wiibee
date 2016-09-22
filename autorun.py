@@ -46,13 +46,25 @@ def cpu_temp(filepath='/sys/class/thermal/thermal_zone0/temp'):
 def wtp_temp(): # TODO i2c read/write use `smbus`
     return float(subprocess.check_output(['/bin/bash', 'wtp_temp.sh', 'get']))
 
-wiiboards = [WiiboardThreaded(address) for address in sys.argv[1:]]
+def getwb(address):
+    try:
+        return WiiboardThreaded(address)
+    except Exception as e:
+        logger.error("Could not connect to %s : %s", address, str(e))
+        # bluetooth.btcommon.BluetoothError: (113, 'No route to host')
+        #   interface error most probably `hciattach` init error
+        # bluetooth.btcommon.BluetoothError: (112, 'Host is down')
+        #   balance out of reach
+        # str(e)[1:-1].split(', ')
+    return None
+
+wiiboards = [getwb(address) for address in sys.argv[1:]]
 # first connect then listen all balance, try to avoid connection refused error
-[wiiboard.thread.start() for wiiboard in wiiboards]
+[wb.thread.start() for wb in wiiboards if wb]
 
 for i in xrange(10):
     time.sleep(2)
     print("%.3f %.2f %.2f "%(time.time(), cpu_temp(), wtp_temp()) +
-          " ".join(["%.2f"%wiiboard.average() for wiiboard in wiiboards]))
+          " ".join(["%.2f"%(wb.average() if wb else 0) for wb in wiiboards]))
 
-[wiiboard.close() for wiiboard in wiiboards]
+[wb.close() for wb in wiiboards if wb]
