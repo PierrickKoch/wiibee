@@ -4,11 +4,11 @@
 GPIOS="4 5" # http://pinout.xyz/pinout/pin16_gpio23
 # Bluetooth MAC, use: hcitool scan, or: python wiiboard.py
 BTADDR="00:1e:35:fd:11:fc 00:22:4c:6e:12:6c"
-#      "00:1e:35:fd:11:fc 00:22:4c:6e:12:6c 00:1E:35:FF:B0:04"
+#      "00:1e:35:fd:11:fc 00:22:4c:6e:12:6c 00:1e:35:ff:b0:04"
 
 sleep 12 # FIXME "wait" for dhcpd timeout
 # if BT failed: sudo systemctl status hciuart.service
-hciconfig > /dev/null || hciattach /dev/serial1 bcm43xx 921600 noflow -
+hciconfig hci0 || hciattach /dev/serial1 bcm43xx 921600 noflow -
 # try to install raspberrypi-sys-mods
 # try apt-get install --reinstall pi-bluetooth
 
@@ -27,7 +27,7 @@ logger "Start listenning to the mass measurements"
 python autorun.py $BTADDR 2>> autorun.log >> wiibee.txt
 logger "Stoped listenning"
 python txt2js.py wiibee < wiibee.txt > wiibee.js
-git commit wiibee.js -m"[data] $(date -Is)"
+# git commit wiibee.js -m"[data] $(date -Is)"
 # TODO git push ssh master
 
 [ -z "$WIIBEE_SHUTDOWN" ] && exit 0
