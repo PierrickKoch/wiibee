@@ -9,7 +9,7 @@
 
 <style>
 .graphdiv {
-    width: 600px;
+    width: auto;
     height: 200px;
 }
 </style>
@@ -27,16 +27,21 @@ function getColors(num, sat, val) {
     }
     return colors;
 }
+var labels = ["Date", "T°CPU", "T", "Fleurs", "Papill", "M3", "M4"];
 // must calibrate each balance and setup the offsets accordingly
-var offset = [     0,       0,  -9, -0.9,  4.4,  2.5,    0,    0,    0,    0];
-//  labels = ["Date", "T°CPU", "T", "M1", "M2", "M3", "M4", "M5", "M6", "M7"];
-var labels = ["Date", "T°CPU", "T", "Fleurs", "Papillon", "M3", "M4", "M5", "M6", "M7"];
-var multi  = [    [],      [],  [],   [],    [],  [],   [],   [],   [],   []];
+var offset = [     0,       0,   0, -0.9,  4.4,  2.5,    0];
+//  labels = ["Date", "T°CPU", "T", "M1", "M2", "M3", "M4"];
+var multi  = [    [],      [],  [],   [],    [],  [],   []];
 var ndata  = 0;
+var range  = [15, 45];
 wiibee.forEach(function(elt1, index1, arr1) {
     elt1.forEach(function(elt2, index2, arr2) {
         multi[index2].push([new Date(1000*elt1[0]), elt2+offset[index2]]);
-        ndata = Math.max(index2,ndata);
+        ndata = Math.max(index2, ndata);
+        if (index2 > 0) {
+            range[0] = Math.min(elt2 -  5, range[0]);
+            range[1] = Math.max(elt2 + 10, range[1]);
+        }
     });
 });
 var colors = getColors(ndata, 1.0, 0.5);
@@ -48,11 +53,12 @@ function gr(index) {
     return new Dygraph(elt, multi[index], {
         labels: ["Date", labels[index]],
         colors: [colors[index-1]],
-        valueRange: [5, 55],
+        valueRange: range,
         axes: {
             x: {
                 valueFormatter: function(value) {
-                    return new Date(value).toISOString();
+                    // slice: "2016-09-22T10:03:55.625Z" -> "09-22T10:03:55"
+                    return new Date(value).toISOString().slice(5, 19);
                 },
             },
             y: {
