@@ -17,6 +17,9 @@ class WiiboardThreaded(WiiboardSampling):
         self.thread = threading.Thread(target=self.loop)
         WiiboardSampling.__init__(self, address)
     def average(self):
+        if not len(self.samples):
+            logger.error("average called before any data could get in")
+            return 0
         # Copy deque content by using list() copy constructor
         #   to avoid: RuntimeError: deque mutated during iteration
         samples = [sum(sample.values()) for sample in list(self.samples)]

@@ -10,7 +10,7 @@ python -c'import bluetooth' 2>/dev/null || apt-get install python-bluez
 echo "Check if USB disk $USB_DEV is plugged in"
 [ -e $USB_DEV ] || exit 1
 [ -d $USB_MNT ] || mkdir -p $USB_MNT
-mount $USB_DEV $USB_MNT
+mount -o uid=pi,gid=pi $USB_DEV $USB_MNT
 cd $USB_MNT
 git clone https://github.com/pierriko/wiibee.git; cd wiibee
 wget https://raw.githubusercontent.com/pierriko/wiiboard/master/wiiboard.py
@@ -24,3 +24,6 @@ cp wittyPi/schedule.wpi /home/pi/wittyPi/schedules/wiibee.wpi
 cp wittyPi/extraTasks.sh /home/pi/wittyPi/
 echo "You can now select the wiibee schedule script..."
 /home/pi/wittyPi/wittyPi.sh
+# TODO fix: Bluetooth failed: sudo systemctl status hciuart.service
+# try apt-get install raspberrypi-sys-mods
+# try apt-get install --reinstall pi-bluetooth
