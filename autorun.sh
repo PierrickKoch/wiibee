@@ -9,8 +9,10 @@ BTADDR="00:1e:35:fd:11:fc 00:22:4c:6e:12:6c"
 sleep 12 # FIXME "wait" for dhcpd timeout
 # if BT failed: sudo systemctl status hciuart.service
 hciconfig hci0 || hciattach /dev/serial1 bcm43xx 921600 noflow -
+# try /dev/ttyAMA0 or /dev/ttyS0 ?
 # try to install raspberrypi-sys-mods
 # try apt-get install --reinstall pi-bluetooth
+# try rpi-update ?
 
 logger "Simulate press red sync button on the Wii Board"
 # http://wiringpi.com/the-gpio-utility/
