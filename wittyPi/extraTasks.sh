@@ -23,4 +23,4 @@ cd $USB_DIR
 # TODO if we have connection, if update enabled, update scripts
 # wget -q --spider http://pierriko.com/wiibee/update
 # git fetch origin && git merge origin/master
-. $SCRIPT
+. $SCRIPT 2>> autorun.log

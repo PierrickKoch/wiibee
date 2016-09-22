@@ -24,7 +24,7 @@ for ngpio in $GPIOS; do
 done
 
 logger "Start listenning to the mass measurements"
-python autorun.py $BTADDR 2>> autorun.log >> wiibee.txt
+python autorun.py $BTADDR >> wiibee.txt
 logger "Stoped listenning"
 python txt2js.py wiibee < wiibee.txt > wiibee.js
 # git commit wiibee.js -m"[data] $(date -Is)"
