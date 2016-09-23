@@ -1,22 +1,19 @@
-<!doctype>
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <script type="text/javascript" src="js/dygraph-combined.min.js"></script>
-    <script type="text/javascript" src="wiibee.js"></script>
-</head>
-<body>
-
+<meta charset="utf-8" />
+<title>WiiBee</title>
+<script type="text/javascript" src="js/dygraph-combined.min.js"></script>
+<script type="text/javascript" src="wiibee.js"></script>
 <style>
 .graphdiv {
-    width: 600px;
     height: 200px;
 }
 </style>
-
+</head>
+<body>
 <div id="graphdiv" class="graphdiv"></div>
-
 <script type="text/javascript">
-
 wiibee.forEach(function(elt, index, arr) {
     arr[index][0] = new Date(1000*elt[0]);
 });
@@ -37,7 +34,6 @@ g = new Dygraph(document.getElementById('graphdiv'), wiibee, {
         },
     },
 });
-
 </script>
-
 </body>
+</html>

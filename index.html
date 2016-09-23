@@ -1,21 +1,19 @@
-<!doctype>
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <script type="text/javascript" src="js/dygraph-combined.js"></script>
-    <script type="text/javascript" src="js/synchronizer.js"></script>
-    <script type="text/javascript" src="wiibee.js"></script>
-</head>
-<body>
-
+<meta charset="utf-8" />
+<title>WiiBee</title>
+<script type="text/javascript" src="js/dygraph-combined.js"></script>
+<script type="text/javascript" src="js/synchronizer.js"></script>
+<script type="text/javascript" src="wiibee.js"></script>
 <style>
 .graphdiv {
-    width: auto;
     height: 200px;
 }
 </style>
-
+</head>
+<body>
 <script type="text/javascript">
-
 function getColors(num, sat, val) {
     var colors = [];
     var half = Math.ceil(num / 2);
@@ -78,7 +76,6 @@ var sync = Dygraph.synchronize(gs, {
   selection: true,
   zoom: true,
 });
-
 </script>
-
 </body>
+</html>
