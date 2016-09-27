@@ -14,6 +14,20 @@ hciconfig hci0 || hciattach /dev/serial1 bcm43xx 921600 noflow -
 # try apt-get install --reinstall pi-bluetooth
 # try rpi-update ?
 
+# try remove miniuart from /boot/config added by wittyPi install ?
+# https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=141195
+X=0
+until hciconfig hci0 up; do
+    if [ "$X" > 3 ]; then
+        systemctl restart hciuart
+    elif [ "$X" > 10 ]; then
+        echo "failed to bring up HCI, rebooting"
+        /sbin/reboot
+    fi
+    X=$((X+1))
+    sleep 0.2
+done
+
 logger "Simulate press red sync button on the Wii Board"
 # http://wiringpi.com/the-gpio-utility/
 for ngpio in $GPIOS; do
