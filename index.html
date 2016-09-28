@@ -34,7 +34,10 @@ var ndata  = 0;
 var range  = [15, 45];
 wiibee.forEach(function(elt1, index1, arr1) {
     elt1.forEach(function(elt2, index2, arr2) {
-        multi[index2].push([new Date(1000*elt1[0]), elt2+offset[index2]]);
+        multi[index2].push([
+            new Date(1000*elt1[0]),
+            elt2 == 0 ? null : elt2 + offset[index2]
+        ]);
         ndata = Math.max(index2, ndata);
         if (index2 > 0) {
             range[0] = Math.min(elt2 -  5, range[0]);
