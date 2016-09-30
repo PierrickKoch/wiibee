@@ -1,10 +1,9 @@
 #! /bin/bash
 
 # Relay PIN, see: http://pinout.xyz/pinout/wiringpi
-GPIOS="4 5" # http://pinout.xyz/pinout/pin16_gpio23
+GPIOS="4 5 6" # http://pinout.xyz/pinout/pin16_gpio23
 # Bluetooth MAC, use: hcitool scan, or: python wiiboard.py
-BTADDR="00:1e:35:fd:11:fc 00:22:4c:6e:12:6c"
-#      "00:1e:35:fd:11:fc 00:22:4c:6e:12:6c 00:1e:35:ff:b0:04"
+BTADDR="00:1e:35:fd:11:fc 00:22:4c:6e:12:6c 00:1e:35:ff:b0:04"
 
 sleep 12 # FIXME "wait" for dhcpd timeout
 # if BT failed: sudo systemctl status hciuart.service
@@ -16,16 +15,14 @@ hciconfig hci0 || hciattach /dev/serial1 bcm43xx 921600 noflow -
 
 # try remove miniuart from /boot/config added by wittyPi install ?
 # https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=141195
-X=0
+d0=$(date +%s)
 until hciconfig hci0 up; do
-    if [ "$X" > 3 ]; then
-        systemctl restart hciuart
-    elif [ "$X" > 10 ]; then
+    systemctl restart hciuart
+    if [ $(($(date +%s) - d0)) -gt 20 ]; then
         echo "failed to bring up HCI, rebooting"
         /sbin/reboot
     fi
-    X=$((X+1))
-    sleep 0.2
+    sleep 1
 done
 
 logger "Simulate press red sync button on the Wii Board"

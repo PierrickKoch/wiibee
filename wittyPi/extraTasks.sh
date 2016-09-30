@@ -15,12 +15,12 @@ logger "Check if USB disk $USB_DEV is plugged in"
 mount -o uid=pi,gid=pi $USB_DEV $USB_MNT
 SCRIPT="autorun.sh"
 USB_DIR="${USB_MNT}/wiibee"
-export WIIBEE_SHUTDOWN=1
-export PATH="${USB_DIR}:${PATH}"
 [ -x "${USB_DIR}/${SCRIPT}" ] || exit 2
 
 cd $USB_DIR
 # TODO if we have connection, if update enabled, update scripts
 # wget -q --spider http://pierriko.com/wiibee/update
 # git fetch origin && git merge origin/master
+export WIIBEE_SHUTDOWN=1
+export PATH="${USB_DIR}:${PATH}"
 . $SCRIPT 2>> autorun.log
